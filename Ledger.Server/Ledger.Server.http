@@ -1,0 +1,6 @@
+@Ledger.Server_HostAddress = http://localhost:5151
+
+GET {{Ledger.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
