@@ -1,21 +1,29 @@
-import { useEffect, useState } from 'react';
+//import { useEffect, useState } from 'react';
 import './App.css';
+import Navbar from './Navbar.tsx'
+import { useCurrentScreenContext } from './currentScreenContext';
+import Container from 'react-bootstrap/Container';
 
-interface Forecast {
+/*interface Forecast {
     date: string;
     temperatureC: number;
     temperatureF: number;
     summary: string;
-}
+}*/
 
 function App() {
-    const [forecasts, setForecasts] = useState<Forecast[]>();
-
-    useEffect(() => {
+    //const [forecasts, setForecasts] = useState<Forecast[]>();
+    const currentScreen = useCurrentScreenContext();
+    /*useEffect(() => {
         populateWeatherData();
-    }, []);
+    }, []);*/
 
-    const contents = forecasts === undefined
+    const contents = 
+    <Container fluid>
+            <Navbar />
+            <p>{ currentScreen.value }</p>
+    </Container>
+    /*forecasts === undefined
         ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
         : <table className="table table-striped" aria-labelledby="tableLabel">
             <thead>
@@ -36,7 +44,7 @@ function App() {
                     </tr>
                 )}
             </tbody>
-        </table>;
+        </table>; */
 
     return (
         <div>
@@ -46,11 +54,11 @@ function App() {
         </div>
     );
 
-    async function populateWeatherData() {
+    /*async function populateWeatherData() {
         const response = await fetch('weatherforecast');
         const data = await response.json();
         setForecasts(data);
-    }
+    }*/
 }
 
 export default App;
