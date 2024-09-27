@@ -5,6 +5,10 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import { useCurrentScreenContext } from './currentScreenContext';
+import Map from './MapScreen.tsx';
+import FinancialsScreen from './FinancialsScreen.tsx'
+import InventoryScreen from './InventoryScreen.tsx';
+import MarketScreen from './MarketScreen.tsx';
 
 function Navbar() {
     useEffect(
@@ -14,10 +18,10 @@ function Navbar() {
     );
 
     const currentScreen = useCurrentScreenContext();
-    const map = () => currentScreen.updateValue("Map")
-    const financials = () => currentScreen.updateValue("Financials")
-    const inventory = () => currentScreen.updateValue("Inventory")
-    const market = () => currentScreen.updateValue("Market")
+    const map = () => currentScreen.updateValue(<Map />);
+    const financials = () => currentScreen.updateValue(<FinancialsScreen />);
+    const inventory = () => currentScreen.updateValue(<InventoryScreen />);
+    const market = () => currentScreen.updateValue(<MarketScreen/>);
 
     const contents =
 

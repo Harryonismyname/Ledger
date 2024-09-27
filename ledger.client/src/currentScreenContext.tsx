@@ -1,19 +1,20 @@
 import React, { ReactNode } from 'react'
 import { createContext, useContext, useState } from 'react';
+import TitleScreen from './TitleScreen.tsx';
 
 
 type CurrentScreen = {
-    value: string;
-    updateValue: (newValue: string) => void;
+    value: ReactNode;
+    updateValue: (newValue: ReactNode) => void;
 }
 
 const currentScreenContext = createContext<CurrentScreen | undefined>(undefined);
 
 
 export const CurrentScreenProvider: React.FC<{children : ReactNode}> = ({ children }) => {
-    const [value, setValue] = useState<string>("Title");
-    const updateValue = (newString: string) => {
-        setValue(newString);
+    const [value, setValue] = useState<ReactNode>(TitleScreen);
+    const updateValue = (newScreen: ReactNode) => {
+        setValue(newScreen);
     }
     return (
         <currentScreenContext.Provider value={{value, updateValue}}>
