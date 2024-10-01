@@ -28,6 +28,8 @@ function ProfitGraph() {
     const timeframeContext = useTimeframeContext();
 
     const dates: string[] = (() => {
+        // Probably have to extract this switch statement so that all requests are filtered through it...
+        // v In here we'll add a filter that will be used when we make the db request
         switch (timeframeContext.value) {
             case TimeRange.CurrentMonth:
                 return ["February", "March"];

@@ -1,4 +1,4 @@
-import { Row, Col, Container, Button } from "react-bootstrap";
+import { ButtonGroup, ButtonToolbar, Container, Button } from "react-bootstrap";
 import { TimeRange, useTimeframeContext } from './TimeframeContext.tsx'
 
 function TimeframePicker() {
@@ -12,22 +12,14 @@ function TimeframePicker() {
 
     const content =
         (
-            <Container fluid as={Row}>
-                <Col>
+            <Container fluid as={ButtonToolbar}>
+                <ButtonGroup>
                     <Button onClick={currentMonth}>Month</Button>
-                </Col>
-                <Col>
                     <Button onClick={threeMonths}>3 Months</Button>
-                </Col>
-                <Col>
                     <Button onClick={sixMonths}>6 Months</Button>
-                </Col>
-                <Col>
                     <Button onClick={nineMonths}>9 Months</Button>
-                </Col>
-                <Col>
                     <Button onClick={year}>Year</Button>
-                </Col>
+                </ButtonGroup>
             </Container >
         );
 
