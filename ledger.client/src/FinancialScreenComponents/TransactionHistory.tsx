@@ -25,24 +25,27 @@ function TransactionHistory() {
     const content = (
         <Container fluid>
             <h3>Transaction History:</h3>
-            <Table>
-                <thead>
-                    <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {dates.map((item, index) => (
+            <div style={{ height: '300px', overflow: 'auto' }}>
+                <Table>
+                    <thead>
                         <tr>
-                            <td key={index}>{item}</td>
-                            <td>Wood</td>
-                            <td>50</td>
+                            <th scope="col">Date</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Units</th>
+                            <th scope="col">Amount</th>
                         </tr>
-                    ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                        {dates.map((item, index) => (
+                            <tr>
+                                <td key={index}>{item}</td>
+                                <td>Wood</td>
+                                <td>50</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            </div>
         </Container>
     )
 
