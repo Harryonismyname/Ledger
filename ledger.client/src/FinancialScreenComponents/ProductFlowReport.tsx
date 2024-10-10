@@ -1,4 +1,5 @@
 import { Table, Container } from "react-bootstrap";
+import { useTimeframeContext, TimeRange } from "./TimeframeContext";
 
 class Batch {
     public Product: string;
@@ -7,18 +8,12 @@ class Batch {
     public PurchasePrice: number;
     public SalePrice: number[];
 
-    AverageSalePrice() {
-        if (this.SalePrice.length < 1) return 0;
-        let average: number = this.SalePrice[0];
-        for (let i = 1; i < this.SalePrice.length; i++) {
-            average += this.SalePrice[i];
-        }
-        average /= this.SalePrice.length;
-        return Math.floor(average);
+    TotalRevinue() {
+        return Math.floor(this.SalePrice.reduce((sum, price) => sum + price, 0) *(this.StartingCount - this.Count));
     }
 
     Net() {
-        return Math.floor((this.AverageSalePrice() - this.PurchasePrice) * this.StartingCount)
+        return Math.floor(this.TotalRevinue() - (this.PurchasePrice * this.StartingCount))
     }
 
     SellProduct(amount: number, price: number) {
@@ -38,13 +33,36 @@ class Batch {
 }
 
 function ProductFlowReport() {
-    const history: Batch[] = [
-        new Batch("Wood", 20, 5),
-        new Batch("Wood", 10, 10),
-        new Batch("Wood", 50, 1),
-        new Batch("Wood", 20, 5),
-        new Batch("Wood", 20, 5),
-    ]
+    const timeframeContext = useTimeframeContext();
+
+    const history: Batch[] = [];
+    function AddProducts(entries: number) {
+        for (let i = 0; i < entries; i++) {
+            history.push(new Batch("Wood", Math.floor(Math.random() * 20+1), Math.floor(Math.random() * 10 + 1)));
+        }
+    }
+    // Dummy Data Use Proper DB API for final version
+    switch (timeframeContext.value) {
+        case TimeRange.CurrentMonth:
+            AddProducts(2);
+            break;
+        case TimeRange.ThreeMonths:
+            AddProducts(3);
+            break;
+        case TimeRange.SixMonths:
+            AddProducts(6);
+            break;
+        case TimeRange.NineMonths:
+            AddProducts(9);
+            break;
+        case TimeRange.Year:
+            AddProducts(12);
+            break;
+        default:
+            AddProducts(3);
+            break;
+    }
+
     let index : number;
     for (let i = 0; i < history.length; i++) {
         index = Math.floor(Math.random() * history.length);
@@ -60,9 +78,10 @@ function ProductFlowReport() {
                 <thead>
                     <tr>
                         <th scope="col">Product</th>
-                        <th scope="col">Purchase Price</th>
-                        <th scope="col">Average Sale Price</th>
-                        <th scope="col">Product Remaining</th>
+                        <th scope="col">Total Purchased</th>
+                        <th scope="col">Total Sold</th>
+                        <th scope="col">Total Revinue</th>
+                        <th scope="col">Total Expense</th>
                         <th scope="col">Net Gain/Loss</th>
                     </tr>
                 </thead>
@@ -70,13 +89,15 @@ function ProductFlowReport() {
                     {history.map((item, index) => (
                         <tr>
                             <td key={index}>{item.Product}</td>
-                            <td key={index}>{item.PurchasePrice}</td>
-                            <td key={index}>{item.AverageSalePrice()}</td>
-                            <td key={index}>{item.Count}</td>
+                            <td key={index}>{item.StartingCount} Units</td>
+                            <td key={index}>{item.StartingCount - item.Count} Units</td>
+                            <td key={index}>{item.TotalRevinue()}</td>
+                            <td key={index}>{item.PurchasePrice * item.StartingCount}</td>
                             <td key={index}>{item.Net()}</td>
                         </tr>
                     ))}
                     <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

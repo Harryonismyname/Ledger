@@ -7,7 +7,8 @@ import {
     Legend,
 }  from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import {useTimeframeContext, TimeRange} from './TimeframeContext.tsx'
+import { useTimeframeContext, TimeRange } from './TimeframeContext.tsx'
+import { useTransactionsContext, Transaction } from "./TransactionContext.tsx"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Legend);
 
@@ -26,10 +27,21 @@ function ProfitGraph() {
     */
 
     const timeframeContext = useTimeframeContext();
+    const transactionContext = useTransactionsContext();
+    const filterDates = (): Transaction[] | undefined => {
+        dates.map(date => {
+            const filteredTransactions = transactionContext?.value?.filter(transaction => transaction.date == date);
+
+        })
+    };
+    const filterTransactions = (isIncome : boolean) : number[] | undefined => {
+        return transactionData 
+            ?.filter(transaction => transaction.amount > 1 && isIncome || transaction.amount < 1 && !isIncome)
+            .map(transaction => Math.abs(transaction.amount))
+    }
+
 
     const dates: string[] = (() => {
-        // Probably have to extract this switch statement so that all requests are filtered through it...
-        // v In here we'll add a filter that will be used when we make the db request
         switch (timeframeContext.value) {
             case TimeRange.CurrentMonth:
                 return ["February", "March"];
@@ -38,30 +50,41 @@ function ProfitGraph() {
             case TimeRange.SixMonths:
                 return ["October", "November", "December", "January", "February", "March"];
             case TimeRange.NineMonths:
-                return ["June", "July", "August", "September", "October", "November", "December", "January", "February", "March"];
+                return ["July", "August", "September", "October", "November", "December", "January", "February", "March"];
             case TimeRange.Year:
-                return ["March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "January", "February", "March"];
+                return ["April", "May", "June", "July", "August", "September", "October", "November", "December", "January", "February", "March"];
             default:
                 return ["January, February, March"];
         }
     }
     )()
 
-    // V Add DB Request Here V
+    let transactionData: Transaction[] | undefined;
 
+
+
+    const income: number[] | undefined = filterTransactions(true);
+    const expenses: number[] | undefined = filterTransactions(false);
+    // Dummy Data
+    const net: number[] | undefined = income?.map((value, index) =>  value - (expenses ? expenses?.[index] : 0) );
     const data =
     {
     labels: dates,
         datasets: [
             {
                 label: "Income",
-                data: [5, 6, 7],
-                backgroundColor: "rgba(255, 99, 132, 0.5)"
+                data: income,
+                backgroundColor: "rgba(50, 99, 255, 0.5)"
             },
             {
                 label: "Expenses",
-                data: [8, 9, 10],
-                backgroundColor: "rgba(50, 99, 255, 0.5)"
+                data: expenses,
+                backgroundColor: "rgba(255, 99, 132, 0.5)"
+            },
+            {
+                label: "Net",
+                data: net,
+                backgroundColor: "rgba(50, 255, 99, 0.5)"
             }
         ],
 
