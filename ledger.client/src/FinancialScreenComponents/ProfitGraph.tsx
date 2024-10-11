@@ -29,15 +29,24 @@ function ProfitGraph() {
     const timeframeContext = useTimeframeContext();
     const transactionContext = useTransactionsContext();
     const filterDates = (): Transaction[] | undefined => {
-        dates.map(date => {
+        const output: Transaction[] | undefined = dates.map(date => {
             const filteredTransactions = transactionContext?.value?.filter(transaction => transaction.date == date);
-
+            for (let i = 0; i < filterTransactions.length; i++) {
+                if (filteredTransactions?.[i]?.date != date) continue
+                return filteredTransactions?.[i];
+            }
+            return new Transaction(date, "None", 0, 0);
         })
+        return output;
     };
     const filterTransactions = (isIncome : boolean) : number[] | undefined => {
         return transactionData 
-            ?.filter(transaction => transaction.amount > 1 && isIncome || transaction.amount < 1 && !isIncome)
-            .map(transaction => Math.abs(transaction.amount))
+            ?.map(transaction => {
+                if (transaction.amount > 1 && isIncome || transaction.amount < 1 && !isIncome) {
+                    return Math.abs(transaction.amount);
+                }
+                return 0;
+            })
     }
 
 
@@ -59,12 +68,14 @@ function ProfitGraph() {
     }
     )()
 
-    let transactionData: Transaction[] | undefined;
+    const transactionData: Transaction[] | undefined = filterDates();
 
 
 
     const income: number[] | undefined = filterTransactions(true);
+    console.log("Income Length : " + income?.length)
     const expenses: number[] | undefined = filterTransactions(false);
+    console.log("Expenses Length : " + expenses?.length)
     // Dummy Data
     const net: number[] | undefined = income?.map((value, index) =>  value - (expenses ? expenses?.[index] : 0) );
     const data =
