@@ -1,6 +1,7 @@
+import InventoryDisplay from "./InventoryScreenComponents/InventoryDisplay.tsx"
 function InventoryScreen() {
   return (
-    <p>This is where you'll see what products are in your inventory!</p>
+    <InventoryDisplay/>
   );
 }
 

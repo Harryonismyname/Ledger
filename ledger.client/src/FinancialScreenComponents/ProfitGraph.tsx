@@ -28,6 +28,7 @@ function ProfitGraph() {
 
     const timeframeContext = useTimeframeContext();
     const transactionContext = useTransactionsContext();
+
     const filterDates = (): Transaction[] | undefined => {
         const output: Transaction[] | undefined = dates.map(date => {
             const filteredTransactions = transactionContext?.value?.filter(transaction => transaction.date == date);
@@ -39,11 +40,12 @@ function ProfitGraph() {
         })
         return output;
     };
+
     const filterTransactions = (isIncome : boolean) : number[] | undefined => {
         return transactionData 
             ?.map(transaction => {
                 if (transaction.amount > 1 && isIncome || transaction.amount < 1 && !isIncome) {
-                    return Math.abs(transaction.amount);
+                    return Math.abs(transaction.amount * transaction.units);
                 }
                 return 0;
             })
@@ -77,7 +79,13 @@ function ProfitGraph() {
     const expenses: number[] | undefined = filterTransactions(false);
     console.log("Expenses Length : " + expenses?.length)
     // Dummy Data
-    const net: number[] | undefined = income?.map((value, index) =>  value - (expenses ? expenses?.[index] : 0) );
+    let total: number = 0;
+    const net: number[] | undefined = income?.map((value, index) => {
+        return total += (value - (expenses ? expenses?.[index] : 0))
+    });
+
+
+
     const data =
     {
     labels: dates,
@@ -85,20 +93,22 @@ function ProfitGraph() {
             {
                 label: "Income",
                 data: income,
-                backgroundColor: "rgba(50, 99, 255, 0.5)"
+                backgroundColor: "rgba(50, 99, 255, 0.5)",
+                tension: .5
             },
             {
                 label: "Expenses",
                 data: expenses,
-                backgroundColor: "rgba(255, 99, 132, 0.5)"
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+                tension: .3
             },
             {
                 label: "Net",
                 data: net,
-                backgroundColor: "rgba(50, 255, 99, 0.5)"
+                backgroundColor: "rgba(50, 255, 99, 0.5)",
+                tension: .3
             }
         ],
-
     }
   return ( <Line data={data}/> );
 }
