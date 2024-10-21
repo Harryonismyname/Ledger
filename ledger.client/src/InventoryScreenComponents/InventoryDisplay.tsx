@@ -1,4 +1,4 @@
-import { Table, Container, Button, Collapse } from "react-bootstrap";
+import { Table, Container, Button, Collapse, Row, Col } from "react-bootstrap";
 import Batch from "../DataStructures/Batch.tsx";
 import { useState } from "react"; // Make sure React is imported if you're using React hooks
 
@@ -26,6 +26,13 @@ function InventoryDisplay() {
     const inventory: { [key: string]: Batch[] } = {};
     const keys: string[] = [];
 
+    const sumTotal = (product: Batch[]) => {
+        return product.map((item) => {
+            return item?.Count;
+        }).reduce((acc, current)=> acc + current, 0);
+
+    }
+
     products.map((item) => { 
         if (!keys.includes(item.Product)) keys.push(item.Product);
         if (!(item.Product in inventory)) inventory[item.Product] = [];
@@ -43,16 +50,25 @@ function InventoryDisplay() {
 
     const contents = (
         <Container fluid>
-            <ul>
                 {keys.map((item, index) => (
-                    <li key={index}>
+                    <Row key={index}>
                         <Button 
                             aria-expanded={openItems[item] || false} 
                             aria-controls={`productDetails${item}`} 
                             type="button" 
                             onClick={() => toggleOpen(item)}
                         >
-                            {item}
+                            <Row>
+                                <Col>
+                                    {item}
+                                </Col>
+                                <Col>
+                                    Onhand:
+                                </Col>
+                                <Col>
+                                    {sumTotal(inventory[item]) }
+                                </Col>
+                            </Row>
                         </Button>
                         <Collapse in={openItems[item] || false}>
                             <Table id={`productDetails${item}`}>
@@ -78,9 +94,8 @@ function InventoryDisplay() {
                                 </tbody>
                             </Table>
                         </Collapse>
-                    </li>
+                    </Row>
                 ))}
-            </ul>
         </Container>
     );
 
