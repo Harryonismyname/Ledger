@@ -1,4 +1,4 @@
-import { Row, Col } from "react-bootstrap";
+import {Grid2 } from "@mui/material"
 import ProfitGraph from './FinancialScreenComponents/ProfitGraph.tsx';
 import TransactionHistory from './FinancialScreenComponents/TransactionHistory.tsx';
 import ProductFlowReport from './FinancialScreenComponents/ProductFlowReport.tsx';
@@ -10,16 +10,16 @@ function FinancialsScreen() {
     return (
         <TimeframeContextProvider>
             <TransactionsContextProvider>
-                <Row>
-                  <Col className="container-fluid">
-                    <ProfitGraph />
-                    <TimeframePicker/>
-                    <TransactionHistory/>
-                  </Col>
-                  <Col className="container-fluid">
-                    <ProductFlowReport/>
-                  </Col>
-                </Row>
+                <Grid2 spacing={2 } container>
+                    <Grid2 size={6}>
+                        <ProfitGraph />
+                        <TimeframePicker/>
+                        <TransactionHistory/>
+                    </Grid2>
+                    <Grid2 size="grow">
+                        <ProductFlowReport/>
+                    </Grid2>
+                </Grid2>
             </TransactionsContextProvider>
       </TimeframeContextProvider>
   );
