@@ -1,18 +1,25 @@
 import './App.css';
 import Navbar from './Navbar.tsx'
 import { useCurrentScreenContext } from './currentScreenContext';
-import Container from 'react-bootstrap/Container';
+import Container from '@mui/material/Container';
+import Stack from "@mui/material/Stack";
 
 
 function App() {
     const currentScreen = useCurrentScreenContext();
 
     return (
-        <Container fluid>
-            <Navbar />
-            <Container fluid>
+        <Container maxWidth="lg">
+            <Stack direction="column"
+                spacing={6}
+                sx={
+                    {
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }} >
+                <Navbar />
                 {currentScreen.value}
-            </Container>
+            </Stack>
         </Container>
     );
 }
