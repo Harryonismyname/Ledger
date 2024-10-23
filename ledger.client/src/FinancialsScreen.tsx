@@ -1,4 +1,4 @@
-import {Grid2 } from "@mui/material"
+import {Grid2, Paper } from "@mui/material"
 import ProfitGraph from './FinancialScreenComponents/ProfitGraph.tsx';
 import TransactionHistory from './FinancialScreenComponents/TransactionHistory.tsx';
 import ProductFlowReport from './FinancialScreenComponents/ProductFlowReport.tsx';
@@ -12,8 +12,10 @@ function FinancialsScreen() {
             <TransactionsContextProvider>
                 <Grid2 spacing={2 } container>
                     <Grid2 size={6}>
-                        <ProfitGraph />
-                        <TimeframePicker/>
+                        <Paper>
+                            <ProfitGraph />
+                            <TimeframePicker/>
+                        </Paper>
                         <TransactionHistory/>
                     </Grid2>
                     <Grid2 size="grow">
