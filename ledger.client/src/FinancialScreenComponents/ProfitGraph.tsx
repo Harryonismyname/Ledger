@@ -103,7 +103,7 @@ function ProfitGraph() {
                 tension: .3
             },
             {
-                label: "Net",
+                label: "Balance",
                 data: net,
                 backgroundColor: "rgba(50, 255, 99, 0.5)",
                 tension: .3

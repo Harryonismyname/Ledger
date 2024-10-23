@@ -1,4 +1,4 @@
-import {  Table, Container } from 'react-bootstrap';
+import {Paper, TableContainer, Table , TableHead, TableBody, TableRow, TableCell, Toolbar, Typography} from "@mui/material"
 import { TimeRange, useTimeframeContext } from './TimeframeContext.tsx'
 import { useTransactionsContext, Transaction } from "./TransactionContext.tsx"
 function TransactionHistory() {
@@ -26,31 +26,40 @@ function TransactionHistory() {
     )()
 
     const content = (
-        <Container fluid>
-            <h3>Transaction History:</h3>
-            <div style={{ height: '300px', overflow: 'auto' }}>
-                <Table>
-                    <thead>
-                        <tr>
-                            <th scope="col">Date</th>
-                            <th scope="col">Product</th>
-                            <th scope="col">Units</th>
-                            <th scope="col">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        <Paper sx={{ width: "100%", overflowY: "hidden", height:400}}>
+            <Toolbar>
+                <Typography
+                    sx={{ flex: '1 1 100%' }}
+                    variant="h6"
+                    id="tableTitle"
+                    component="div"
+                >
+                    Transaction History:
+                </Typography>
+            </Toolbar>
+            <TableContainer sx={{maxHeight: 340} }>
+                <Table stickyHeader>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell scope="col">Date</TableCell>
+                            <TableCell scope="col">Product</TableCell>
+                            <TableCell scope="col">Units</TableCell>
+                            <TableCell scope="col">Amount</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
                         {dates?.map((item, index) => (
-                            <tr>
-                                <td key={index}>{item.date}</td>
-                                <td>{ item.product }</td>
-                                <td>{ item.units }</td>
-                                <td>{ item.amount}</td>
-                            </tr>
+                            <TableRow>
+                                <TableCell key={index}>{item.date}</TableCell>
+                                <TableCell>{ item.product }</TableCell>
+                                <TableCell>{ item.units }</TableCell>
+                                <TableCell>{ item.amount}</TableCell>
+                            </TableRow>
                         ))}
-                    </tbody>
+                    </TableBody>
                 </Table>
-            </div>
-        </Container>
+            </TableContainer>
+        </Paper>
     )
 
   return ( content );
