@@ -1,4 +1,4 @@
-import { Accordion, AccordionSummary, AccordionDetails, Table, Grid2, Box } from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails, Table, Grid2 } from "@mui/material";
 import Batch from "../DataStructures/Batch.tsx";
 
 const products: Batch[] = [];
