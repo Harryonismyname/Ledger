@@ -1,4 +1,4 @@
-import { ButtonGroup, ButtonToolbar, Container, Button } from "react-bootstrap";
+import {ButtonGroup, Button } from "@mui/material"
 import { TimeRange, useTimeframeContext } from './TimeframeContext.tsx'
 
 function TimeframePicker() {
@@ -12,15 +12,13 @@ function TimeframePicker() {
 
     const content =
         (
-            <Container fluid as={ButtonToolbar}>
-                <ButtonGroup>
-                    <Button onClick={currentMonth}>Month</Button>
-                    <Button onClick={threeMonths}>3 Months</Button>
-                    <Button onClick={sixMonths}>6 Months</Button>
-                    <Button onClick={nineMonths}>9 Months</Button>
-                    <Button onClick={year}>Year</Button>
-                </ButtonGroup>
-            </Container >
+            <ButtonGroup sx={{ justifyContent: "center" }}>
+                <Button onClick={currentMonth}>Month</Button>
+                <Button onClick={threeMonths}>3 Months</Button>
+                <Button onClick={sixMonths}>6 Months</Button>
+                <Button onClick={nineMonths}>9 Months</Button>
+                <Button onClick={year}>Year</Button>
+            </ButtonGroup>
         );
 
 
