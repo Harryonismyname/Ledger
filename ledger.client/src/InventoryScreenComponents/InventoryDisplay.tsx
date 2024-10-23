@@ -1,6 +1,5 @@
-import { Table, Container, Button, Collapse, Row, Col } from "react-bootstrap";
+import { Accordion, AccordionSummary, AccordionDetails, Table, Grid2, Box } from "@mui/material";
 import Batch from "../DataStructures/Batch.tsx";
-import { useState } from "react"; // Make sure React is imported if you're using React hooks
 
 const products: Batch[] = [];
 
@@ -29,74 +28,61 @@ function InventoryDisplay() {
     const sumTotal = (product: Batch[]) => {
         return product.map((item) => {
             return item?.Count;
-        }).reduce((acc, current)=> acc + current, 0);
+        }).reduce((acc, current) => acc + current, 0);
 
     }
 
-    products.map((item) => { 
+    products.map((item) => {
         if (!keys.includes(item.Product)) keys.push(item.Product);
         if (!(item.Product in inventory)) inventory[item.Product] = [];
         inventory[item.Product].push(item);
     });
 
-    const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({});
-
-    const toggleOpen = (key: string) => {
-        setOpenItems(prevOpen => ({
-            ...prevOpen,
-            [key]: !prevOpen[key]
-        }));
-    };
 
     const contents = (
-        <Container fluid>
-                {keys.map((item, index) => (
-                    <Row key={index}>
-                        <Button 
-                            aria-expanded={openItems[item] || false} 
-                            aria-controls={`productDetails${item}`} 
-                            type="button" 
-                            onClick={() => toggleOpen(item)}
-                        >
-                            <Row>
-                                <Col>
-                                    {item}
-                                </Col>
-                                <Col>
-                                    Onhand:
-                                </Col>
-                                <Col>
-                                    {sumTotal(inventory[item]) }
-                                </Col>
-                            </Row>
-                        </Button>
-                        <Collapse in={openItems[item] || false}>
-                            <Table id={`productDetails${item}`}>
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Product</th>
-                                        <th scope="col">Total Purchased</th>
-                                        <th scope="col">Total Sold</th>
-                                        <th scope="col">Remaining</th>
-                                        <th scope="col">Purchase Price per Unit</th>
+        <div>
+            {keys.map((item) => (
+                <Accordion>
+                    <AccordionSummary aria-controls={`productDetails${item}`}>
+                        <Grid2 container spacing={2}>
+                            <Grid2 size="grow">
+                                {item}
+                            </Grid2>
+                            <Grid2 size={6}>
+                                Onhand:
+                            </Grid2>
+                            <Grid2 size="auto">
+                                {sumTotal(inventory[item]) }
+                            </Grid2>
+                        </Grid2>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Table id={`productDetails${item}`}>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Total Purchased</th>
+                                    <th scope="col">Total Sold</th>
+                                    <th scope="col">Remaining</th>
+                                    <th scope="col">Purchase Price per Unit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {inventory[item].map((product, i) => (
+                                    <tr key={i}>
+                                        <td>{product.Product}</td>
+                                        <td>{product.StartingCount} Units</td>
+                                        <td>{product.StartingCount - product.Count} Units</td>
+                                        <td>{product.Count} Units</td>
+                                        <td>{product.PurchasePrice}</td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {inventory[item].map((product, i) => (
-                                        <tr key={i}>
-                                            <td>{product.Product}</td>
-                                            <td>{product.StartingCount} Units</td>
-                                            <td>{product.StartingCount - product.Count} Units</td>
-                                            <td>{product.Count} Units</td>
-                                            <td>{product.PurchasePrice}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </Table>
-                        </Collapse>
-                    </Row>
-                ))}
-        </Container>
+                                ))}
+                            </tbody>
+                        </Table>
+                        </AccordionDetails>
+                </Accordion>
+            ))}
+        </div>
     );
 
     return contents;
