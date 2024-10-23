@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import './App.css';
-import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
+import Container from '@mui/material/Container';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 import { useCurrentScreenContext } from './currentScreenContext';
 import Map from './MapScreen.tsx';
 import FinancialsScreen from './FinancialsScreen.tsx'
@@ -25,23 +24,30 @@ function Navbar() {
 
     const contents =
 
-        <Row>
-            <Col as={Button} onClick={ map}>
+        <Stack direction="row" spacing={ 4} sx={{justifyContent:"center"} }>
+            <Button onClick={ map}>
                 Map
-            </Col>
-            <Col as={Button} onClick={ financials}>
+            </Button>
+            <Button onClick={financials}>
                 Financials
-            </Col>
-            <Col as={Button} onClick={ inventory }>
+            </Button>
+            <Button onClick={inventory}>
                 Inventory
-            </Col>
-            <Col as={Button} onClick={ market }>
+            </Button>
+            <Button onClick={market}>
                 Market
-            </Col>
-        </Row>;
+            </Button>
+        </Stack>;
 
     return (
-        <Container fluid>
+        <Container maxWidth="lg" sx={{
+            position: 'fixed',   // Fixes the element's position on the screen
+            top: 0,              // Anchors it to the top
+            width: '100%',       // Ensures it stretches across the width of the screen
+            padding: '16px',     // Some padding for the content
+            backgroundColor : "darkgrey",
+            boxShadow: '0 4px 2px -2px gray', // Optional shadow for styling
+        }}>
             {contents}
         </Container>
     );
