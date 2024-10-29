@@ -1,6 +1,11 @@
+import {Container } from "@mui/material"
+import TradeWindow from "./MarketScreenComponents/TradeWindow.tsx"
 function MarketScreen() {
-  return (
-    <p>This is the Local Market rates!</p>
+    return (
+        <Container>
+            <TradeWindow/>
+            <p>This is the Local Market rates!</p>
+        </Container>
   );
 }
 
